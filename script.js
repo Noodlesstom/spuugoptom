@@ -159,30 +159,30 @@ document.addEventListener('DOMContentLoaded', () => {
     splodeSound.volume = 0.7;
     
     // Afbeeldingen
-    const idleImage = 'face_idle.gif';
-    const talkingImage = 'face_talking.gif';
-    const explosionImage = 'splode.png';
-    const spitImage = 'spit.png';
-    const faceSpitImage = 'face_spit.gif';
-    const faceHurtImage = 'face_hurt.gif';
-    const spitVsSpitImage = 'spitvsspit.png';
+    const idleImage = 'Graphics/face_idle.gif';
+    const talkingImage = 'Graphics/face_talking.gif';
+    const explosionImage = 'Graphics/splode.png';
+    const spitImage = 'Graphics/spit.png';
+    const faceSpitImage = 'Graphics/face_spit.gif';
+    const faceHurtImage = 'Graphics/face_hurt.gif';
+    const spitVsSpitImage = 'Graphics/spitvsspit.png';
     // Nieuwe Tom hurt afbeeldingen
     const tomHurtImages = [
-        'tom_hurt1.png',
-        'tom_hurt2.png',
-        'tom_hurt3.png',
-        'tom_hurt4.png',
-        'tom_hurt5.png',
-        'tom_hurt6.png',
-        'tom_hurt7.png',
-        'tom_hurt8.png',
-        'tom_hurt9.png',
-        'tom_hurt10.png'
+        'Graphics/tom_hurt1.png',
+        'Graphics/tom_hurt2.png',
+        'Graphics/tom_hurt3.png',
+        'Graphics/tom_hurt4.png',
+        'Graphics/tom_hurt5.png',
+        'Graphics/tom_hurt6.png',
+        'Graphics/tom_hurt7.png',
+        'Graphics/tom_hurt8.png',
+        'Graphics/tom_hurt9.png',
+        'Graphics/tom_hurt10.png'
     ];
     const cloudImages = [
-        'cloud1.png',
-        'cloud2.png',
-        'cloud3.png'
+        'Graphics/cloud1.png',
+        'Graphics/cloud2.png',
+        'Graphics/cloud3.png'
     ];
     
     // Arrays om alle elementen bij te houden
