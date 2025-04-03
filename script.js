@@ -124,17 +124,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const useButtonsBtn = document.getElementById('use-buttons');
     
     // Audio-bestanden
-    const bgMusic = new Audio('Assets/Audio/bg_music.wav');
+    const bgMusic = new Audio('bg_music.mp3');
     bgMusic.loop = true;
     
     const soundEffects = [
-        new Audio('Assets/Audio/OE1.wav'),
-        new Audio('Assets/Audio/OE2.wav'),
-        new Audio('Assets/Audio/OE3.wav'),
-        new Audio('Assets/Audio/OE4.wav'),
-        new Audio('Assets/Audio/OE5.wav'),
-        new Audio('Assets/Audio/OE6.wav'),
-        new Audio('Assets/Audio/OE7.wav')
+        new Audio('OE1.wav'),
+        new Audio('OE2.wav'),
+        new Audio('OE3.wav'),
+        new Audio('OE4.wav'),
+        new Audio('OE5.wav'),
+        new Audio('OE6.wav'),
+        new Audio('OE7.wav')
     ];
     
     // Verlaag het volume van de OE-geluiden met 6dB
@@ -144,45 +144,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Specifieke geluid voor klikken op hoofdTom
-    const tomClickSound = new Audio('Assets/Audio/OE5.wav');
+    const tomClickSound = new Audio('OE5.wav');
     tomClickSound.volume = 0.5;
     
     // Specifiek geluid voor als Tom1 geraakt wordt
-    const tomHitSound = new Audio('Assets/Audio/tomgeraakt.wav');
+    const tomHitSound = new Audio('tomgeraakt.wav');
     tomHitSound.volume = 0.7;
     
     // Nieuwe geluidseffecten
-    const pewSound = new Audio('Assets/Audio/pew.wav');
+    const pewSound = new Audio('pew.wav');
     pewSound.volume = 0.7;
     
-    const splodeSound = new Audio('Assets/Audio/splode.wav');
+    const splodeSound = new Audio('splode.wav');
     splodeSound.volume = 0.7;
     
     // Afbeeldingen
-    const idleImage = 'Assets/Graphics/face_idle.gif';
-    const talkingImage = 'Assets/Graphics/face_talking.gif';
-    const explosionImage = 'Assets/Graphics/splode.png';
-    const spitImage = 'Assets/Graphics/spit.png';
-    const faceSpitImage = 'Assets/Graphics/face_spit.gif';
-    const faceHurtImage = 'Assets/Graphics/face_hurt.gif';
-    const spitVsSpitImage = 'Assets/Graphics/spitvsspit.png';
+    const idleImage = 'face_idle.gif';
+    const talkingImage = 'face_talking.gif';
+    const explosionImage = 'splode.png';
+    const spitImage = 'spit.png';
+    const faceSpitImage = 'face_spit.gif';
+    const faceHurtImage = 'face_hurt.gif';
+    const spitVsSpitImage = 'spitvsspit.png';
     // Nieuwe Tom hurt afbeeldingen
     const tomHurtImages = [
-        'Assets/Graphics/tom_hurt1.png',
-        'Assets/Graphics/tom_hurt2.png',
-        'Assets/Graphics/tom_hurt3.png',
-        'Assets/Graphics/tom_hurt4.png',
-        'Assets/Graphics/tom_hurt5.png',
-        'Assets/Graphics/tom_hurt6.png',
-        'Assets/Graphics/tom_hurt7.png',
-        'Assets/Graphics/tom_hurt8.png',
-        'Assets/Graphics/tom_hurt9.png',
-        'Assets/Graphics/tom_hurt10.png'
+        'tom_hurt1.png',
+        'tom_hurt2.png',
+        'tom_hurt3.png',
+        'tom_hurt4.png',
+        'tom_hurt5.png',
+        'tom_hurt6.png',
+        'tom_hurt7.png',
+        'tom_hurt8.png',
+        'tom_hurt9.png',
+        'tom_hurt10.png'
     ];
     const cloudImages = [
-        'Assets/Graphics/cloud1.png',
-        'Assets/Graphics/cloud2.png',
-        'Assets/Graphics/cloud3.png'
+        'cloud1.png',
+        'cloud2.png',
+        'cloud3.png'
     ];
     
     // Arrays om alle elementen bij te houden
