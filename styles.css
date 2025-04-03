@@ -1,0 +1,815 @@
+/* Bubblegum lettertype inladen */
+@font-face {
+    font-family: 'Bubblegum';
+    src: url('Assets/Graphics/Bubblegum.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #87CEEB;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent; /* Verwijder blauwe highlight op mobiel */
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+/* Wolk animatie container */
+#clouds-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Wolk elementen */
+.cloud {
+    position: absolute;
+    pointer-events: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: none;
+    border-radius: 0;
+}
+
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    z-index: 100;
+    pointer-events: none;
+}
+
+#start-text {
+    font-family: 'Bubblegum', sans-serif;
+    font-size: 36px;
+    color: #ffff00;
+    -webkit-text-stroke: 2px #ff0000;
+    text-stroke: 2px #ff0000;
+    pointer-events: none;
+    text-align: center;
+    margin-bottom: 50px;
+    order: -1;
+}
+
+#main-tom {
+    width: 200px;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    transform-origin: center center;
+    pointer-events: auto;
+    transform: scale(2.0); /* Standaard grootte */
+}
+
+/* Level 2 stijl voor hoofdTom wanneer er geschoten kan worden */
+#main-tom.ready-to-fire {
+    /* Verwijder de transform eigenschap die rotatie overschrijft */
+}
+
+#game-container {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 5;
+}
+
+/* Health bar container */
+#health-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 100;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: none; /* Verborgen tot level 2 */
+}
+
+/* Health bar */
+#health-bar {
+    height: 100%;
+    width: 100%;
+    background-color: #2ecc71; /* Start met groen */
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Score container */
+#score-container {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 10px;
+    font-size: 18px;
+    z-index: 100;
+    text-align: center;
+    display: none; /* Verborgen tot level 2 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Schaduw toevoegen voor betere leesbaarheid */
+}
+
+/* YouTube playlist container */
+#youtube-playlist {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+/* YouTube playlist label */
+.playlist-label {
+    font-family: 'Bubblegum', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffff00;
+    -webkit-text-stroke: 1px #ff0000;
+    text-stroke: 1px #ff0000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin-top: 5px;
+}
+
+/* YouTube iframe aanpassing */
+#youtube-playlist iframe {
+    width: 400px;
+    height: 300px;
+    border: none;
+}
+
+/* Score display */
+#score-display {
+    font-family: 'Bubblegum', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffff00;
+    -webkit-text-stroke: 2px #ff0000;
+    text-stroke: 2px #ff0000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Tom-hoofden */
+.tom-head {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+    will-change: transform; /* Dit bereidt de browser voor op transformaties */
+    transform: translateZ(0); /* Forceer hardware acceleratie */
+    -webkit-backface-visibility: hidden; /* Voorkomt flikkering in Webkit-browsers */
+    backface-visibility: hidden;
+}
+
+/* Spitmouth overlay */
+.spit-mouth {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 10;
+    pointer-events: none; /* Zorgt ervoor dat klikken door de overlay heen gaan */
+}
+
+/* Explosie-animatie */
+.splode {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-image: url('Assets/Graphics/splode.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 100;
+    will-change: transform; /* Dit bereidt de browser voor op transformaties */
+    transform: translateZ(0); /* Forceer hardware acceleratie */
+    -webkit-backface-visibility: hidden; /* Voorkomt flikkering in Webkit-browsers */
+    backface-visibility: hidden;
+}
+
+/* Spit-vs-Spit botsing animatie */
+.spit-collision {
+    position: absolute;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 100;
+}
+
+/* Kogel-Tommies styling */
+.bullet-tommie {
+    transform-origin: center center;
+    opacity: 0.9;
+}
+
+#controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Level 2 instructies */
+#level2-instructions {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    text-align: center;
+    z-index: 1000;
+    animation: fadeInOut 5s forwards;
+    font-family: 'Bubblegum', sans-serif;
+}
+
+#level2-instructions h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #ffff00;
+    -webkit-text-stroke: 2px #ff0000;
+    text-stroke: 2px #ff0000;
+}
+
+#level2-instructions p {
+    font-size: 22px;
+    color: #ffff00;
+    -webkit-text-stroke: 2px #ff0000;
+    text-stroke: 2px #ff0000;
+}
+
+/* Game Over scherm */
+#game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-family: 'Bubblegum', sans-serif;
+    display: none;
+}
+
+#game-over h1 {
+    font-size: 72px;
+    color: #ffff00;
+    -webkit-text-stroke: 2px #ff0000;
+    text-stroke: 2px #ff0000;
+    margin-bottom: 20px;
+}
+
+#game-over p {
+    font-size: 36px;
+    color: #ffff00;
+    -webkit-text-stroke: 2px #ff0000;
+    text-stroke: 2px #ff0000;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Spuugscore styling */
+#score-efficiency {
+    font-size: 48px; /* Groter dan normale paragrafen */
+    margin: 20px 0;
+}
+
+/* Score feedback styling */
+#score-feedback {
+    font-size: 36px; /* Iets kleiner dan de spuugscore */
+    margin: 15px 0 25px 0;
+    text-align: center;
+    font-family: 'Bubblegum', sans-serif;
+    max-width: 90%;
+}
+
+/* Kleurvarianten voor de spuugscore */
+.score-high {
+    color: #00ff00 !important; /* Groen */
+    -webkit-text-stroke: 2px #006600 !important;
+    text-stroke: 2px #006600 !important;
+}
+
+.score-medium {
+    color: #ffff00 !important; /* Geel */
+    -webkit-text-stroke: 2px #ff6600 !important;
+    text-stroke: 2px #ff6600 !important;
+}
+
+.score-low {
+    color: #ff0000 !important; /* Rood */
+    -webkit-text-stroke: 2px #660000 !important;
+    text-stroke: 2px #660000 !important;
+}
+
+#restart-button {
+    margin-top: 40px;
+    padding: 15px 30px;
+    font-size: 24px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Bubblegum', sans-serif;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Wolk animatie */
+@keyframes floatCloud {
+    0% { transform: translateX(-20vw) translateZ(0); }
+    100% { transform: translateX(120vw) translateZ(0); }
+}
+
+/* Mobiele besturing */
+#mobile-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 500;
+}
+
+#rotation-controls {
+    display: flex;
+    gap: 20px;
+}
+
+.control-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 3px solid #ffff00;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+#spit-button {
+    width: 120px;
+    height: 120px;
+    font-size: 20px;
+    background-color: rgba(200, 250, 200, 0.7);
+}
+
+.control-btn:active {
+    background-color: rgba(255, 255, 0, 0.7);
+    transform: scale(0.95);
+}
+
+/* Responsive aanpassingen */
+@media (max-width: 768px) {
+    #controls {
+        display: none !important; /* Verberg de desktop controls */
+    }
+    
+    .tom-head {
+        width: 50px;
+        height: 50px;
+    }
+    
+    #main-tom {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .splode {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .cloud {
+        /* Wolken 50% kleiner op mobiel */
+        transform: scale(0.5);
+    }
+    
+    #health-container {
+        width: 80%; /* Breedte relatief aan schermgrootte */
+        max-width: 250px; /* Maximale breedte op kleine schermen */
+        top: 5px; /* Iets dichter bij de bovenkant */
+    }
+    
+    #score-container {
+        width: auto; /* Automatische breedte op basis van inhoud */
+        min-width: 120px; /* Minimale breedte voor leesbaarheid */
+        font-size: 16px; /* Iets kleinere tekst */
+        top: 35px; /* Aangepaste verticale positie */
+    }
+    
+    #score-display {
+        font-weight: bold; /* Maak de score wat opvallender */
+    }
+    
+    #level2-instructions {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+    
+    #game-over h1 {
+        font-size: 30px;
+    }
+    
+    #game-over p {
+        font-size: 18px;
+    }
+    
+    /* Spuugscore aangepast voor mobiel */
+    #score-efficiency {
+        font-size: 24px; /* Nog steeds groter dan normale paragrafen op mobiel */
+        margin: 15px 0;
+    }
+    
+    /* Score feedback aangepast voor mobiel */
+    #score-feedback {
+        font-size: 18px; /* Kleinere tekstgrootte op mobiel */
+        margin: 10px 0 20px 0;
+        max-width: 95%;
+        padding: 0 10px;
+    }
+    
+    /* Kleiner voor betere grip op mobiel */
+    .control-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+    
+    #spit-button {
+        width: 80px;
+        height: 80px;
+    }
+    
+    /* YouTube iframe kleiner op mobiel */
+    #youtube-playlist iframe {
+        width: 300px;
+        height: 225px;
+    }
+    
+    .playlist-label {
+        font-size: 16px;
+    }
+    
+    /* Specifieke optimalisaties voor mobiel */
+    #clouds-container {
+        will-change: opacity;
+        opacity: 0.8; /* Iets transparanter voor betere performance */
+    }
+    
+    /* Verminder het aantal animaties op mobiel */
+    @keyframes floatCloud {
+        0% { transform: translateX(-20vw) translateZ(0); }
+        100% { transform: translateX(120vw) translateZ(0); }
+    }
+    
+    .tom-glow {
+        /* Zorg ervoor dat de glow ook op mobiel goed zichtbaar is */
+        z-index: 50;
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    }
+}
+
+/* Fix voor iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+    .game-container, body, html {
+        height: -webkit-fill-available;
+    }
+}
+
+/* Gyroscoop toestemming */
+#gyro-permission {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.permission-content {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 80%;
+    font-family: 'Bubblegum', sans-serif;
+}
+
+.permission-content h2 {
+    color: #ff0000;
+    margin-bottom: 15px;
+}
+
+.permission-content p {
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.permission-content button {
+    margin: 10px;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: none;
+    font-family: 'Bubblegum', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#enable-gyro {
+    background-color: #88ff88;
+    color: #006600;
+}
+
+#use-buttons {
+    background-color: #ffcc88;
+    color: #884400;
+}
+
+/* Besturingsstijl indicator */
+#control-indicator,
+#music-indicator {
+    position: fixed;
+    top: 10px;
+    z-index: 500;
+    pointer-events: none;
+}
+
+#control-indicator {
+    right: 10px;
+}
+
+#music-indicator {
+    right: 60px;
+}
+
+.indicator-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    text-shadow: 0 0 3px white;
+}
+
+.indicator-icon.music {
+    background-color: rgba(30, 215, 96, 0.5); /* Spotify groen */
+}
+
+/* Tom glow animatie */
+@keyframes tomGlowAnimation {
+    0% {
+        opacity: 1;
+        transform: scale(0.7);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+}
+
+.tom-glow {
+    position: absolute;
+    pointer-events: none;
+    z-index: 50;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+.animate-glow {
+    animation: tomGlowAnimation 0.8s ease-out forwards;
+}
+
+/* Scorebord en score-invoer stijlen */
+.name-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px 0;
+    width: 100%;
+    max-width: 300px;
+}
+
+.name-input-container label {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.name-input-container input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 3px solid #fff;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+}
+
+.name-input-container button {
+    background-color: #00a550;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-family: 'Press Start 2P', cursive;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.name-input-container button:hover {
+    background-color: #008040;
+}
+
+.name-input-container button:disabled {
+    background-color: #008040;
+    opacity: 0.7;
+    cursor: default;
+}
+
+.scoreboard {
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 3px solid white;
+    border-radius: 5px;
+    padding: 15px;
+    width: 90%;
+    max-width: 500px;
+    margin: 10px auto;
+}
+
+.scoreboard h2 {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.scores-list table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+.scores-list th, .scores-list td {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.scores-list th {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    padding: 10px 5px;
+}
+
+.scores-list td {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+}
+
+.score-high-row {
+    background-color: rgba(39, 174, 96, 0.3);
+}
+
+.score-medium-row {
+    background-color: rgba(241, 196, 15, 0.3);
+}
+
+.score-low-row {
+    background-color: rgba(231, 76, 60, 0.3);
+}
+
+/* Media query voor mobiel */
+@media (max-width: 768px) {
+    .scoreboard {
+        padding: 10px;
+        width: 95%;
+    }
+    
+    .scoreboard h2 {
+        font-size: 14px;
+    }
+    
+    .scores-list th {
+        font-size: 8px;
+        padding: 5px 2px;
+    }
+    
+    .scores-list td {
+        font-size: 10px;
+        padding: 5px 2px;
+    }
+    
+    .name-input-container input {
+        font-size: 14px;
+    }
+    
+    .name-input-container button {
+        font-size: 10px;
+        padding: 6px 12px;
+    }
+}
+
+/* Score kleurstijlen */
+.score-high {
+    color: #27ae60;
+    text-shadow: 0 0 5px #27ae60;
+}
+
+.score-medium {
+    color: #f1c40f;
+    text-shadow: 0 0 5px #f1c40f;
+}
+
+.score-low {
+    color: #e74c3c;
+    text-shadow: 0 0 5px #e74c3c;
+} 

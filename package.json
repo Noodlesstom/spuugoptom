@@ -1,0 +1,15 @@
+{
+  "name": "tomscreensaver",
+  "version": "1.0.0",
+  "description": "Een interactieve screensaver met 100 stuiterende hoofden van Tom die geluid maken wanneer ze de randen van het scherm raken.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^11.6.0"
+  }
+}

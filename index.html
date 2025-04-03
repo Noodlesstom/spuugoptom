@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spuug op Tom!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Assets/Graphics/splode.png" type="image/png">
+</head>
+<body>
+    <div id="clouds-container">
+        <!-- Wolken worden hier dynamisch toegevoegd -->
+    </div>
+    <div id="game-container">
+        <!-- De stuiterende hoofden worden hier dynamisch toegevoegd -->
+    </div>
+    <div id="start-screen">
+        <div id="main-tom" class="tom-head"></div>
+    </div>
+    <div id="health-container">
+        <div id="health-bar"></div>
+    </div>
+    <div id="score-container">
+        <div id="score-display">Score: 0</div>
+    </div>
+    <div id="controls" style="display: none;">
+        <button id="speed-up">Sneller</button>
+        <button id="speed-down">Langzamer</button>
+    </div>
+    
+    <!-- Mobiele besturing -->
+    <div id="mobile-controls" style="display: none;">
+        <div id="rotation-controls">
+            <button id="rotate-left" class="control-btn">←</button>
+            <button id="rotate-right" class="control-btn">→</button>
+        </div>
+        <button id="spit-button" class="control-btn">SPUUG</button>
+    </div>
+    
+    <!-- Gyroscoop toestemming -->
+    <div id="gyro-permission" style="display: none;">
+        <div class="permission-content">
+            <h2>Besturing Kiezen</h2>
+            <p>Kies je besturingsmethode:</p>
+            <button id="enable-touch">Aanraakbesturing</button>
+            <button id="enable-gyro">Gyroscoop Inschakelen</button>
+            <button id="use-buttons">Gebruik Knoppen</button>
+        </div>
+    </div>
+    
+    <!-- YouTube-achtergrondmuziek (verborgen) -->
+    <div id="youtube-container" style="position:absolute; left:-9999px; top:-9999px;">
+        <div id="youtube-player"></div>
+    </div>
+    
+    <div id="game-over">
+        <h1>OKE GENOEG GESPUUGD!</h1>
+        <p id="score-hits">Geraakt: 0 Tommies</p>
+        <p id="score-time">Tijd: 0 seconden</p>
+        <p id="score-efficiency">JOUW SPUUGSCORE: 0/10</p>
+        <!-- YouTube playlist onder de spuugscore -->
+        <div id="youtube-playlist">
+            <iframe width="400" height="300" src="https://www.youtube.com/embed/epbU3Qf_Q4g?list=PLItrFgDQYsMNttGDbMBpGOKGr3EZ-wQiN" title="Meer van Tom" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div class="playlist-label">Meer van Tom!</div>
+        </div>
+        <button id="restart-button">Opnieuw Spelen</button>
+    </div>
+    
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
